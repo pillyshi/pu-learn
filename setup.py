@@ -7,6 +7,6 @@ setup(
     author = 'pillyshi',
     author_email = 'pillyshi21@gmail.com',
     description = 'Simple PU Learning',
-    packages = find_packages(),
+    packages = ['pulearn'],
     install_requires = ['numpy', 'scikit-learn'],
 )
