@@ -1,4 +1,5 @@
 import itertools
+from logging import getLogger
 
 import numpy as np
 from sklearn.base import BaseEstimator, ClassifierMixin
@@ -9,10 +10,11 @@ from sklearn import metrics
 
 class PUClassifier(BaseEstimator, ClassifierMixin):
 
-    def __init__(self, base_estimator, positive_class_prior=0.5, random_state=0):
+    def __init__(self, base_estimator, positive_class_prior=0.5, random_state=0, logger=None):
         self.base_estimator = base_estimator
         self.positive_class_prior = positive_class_prior
         self.random_state = random_state
+        self.logger = logger if logger else getLogger('PUClassifier')
 
     def fit(self, X, s):
         X, y, sample_weight = self._get_input(X, s)
@@ -38,6 +40,8 @@ class PUClassifier(BaseEstimator, ClassifierMixin):
             if score > best_score:
                 best_score = score
                 best_params = params
+        self.logger.info(f'best_score: {score}')
+        self.logger.info(f'best_params: {best_params}')
         model.set_params(**best_params)
         model.fit(X, y, sample_weight=sample_weight)
         self.base_estimator = model
