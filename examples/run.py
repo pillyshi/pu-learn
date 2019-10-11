@@ -37,9 +37,19 @@ def toy(args):
     logger.info(f'n_positives: {np.sum(s == 1)}')
     logger.info(f'n_unlabeled: {np.sum(s == 0)}')
 
-    base_estimator = SGDClassifier(class_weight='balanced', random_state=args.random_state)
+    base_estimator = SGDClassifier(random_state=args.random_state)
     model = PUClassifier(base_estimator)
-    model.fit_cv(X_train, s, {'alpha': np.logspace(-4, 1, 10)})
+    param_grid = {
+        'alpha': np.logspace(-4, 1, 10),
+        'class_weight': [
+            'balanced',
+            {1: 10},
+            {1: 100},
+            {1: 1000},
+            {1: 10000}
+        ]
+    }
+    model.fit_cv(X_train, s, param_grid, scoring='balanced_accuracy', n_splits=3)
     y_pred = model.predict(X_test)
     print(metrics.classification_report(y_test, y_pred))    
 
