@@ -21,7 +21,7 @@ class PUClassifier(BaseEstimator, ClassifierMixin):
         self.base_estimator.fit(X, y, sample_weight=sample_weight)
         return self
 
-    def fit_cv(self, X, s, param_grid, scoring='accuracy', n_splits=5):
+    def fit_cv(self, X, s, param_grid, scoring='balanced_accuracy', n_splits=5):
         score_func = metrics.get_scorer(scoring)
 
         X, y, sample_weight = self._get_input(X, s)
