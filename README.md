@@ -19,5 +19,5 @@ pipenv run python -m examples.run toy
 Install as a package:
 
 ```
-pipenv install git+https://github.com/pillyshi/pu-learn.git#egg=pulearn
+pipenv install git+https://github.com/pillyshi/pu-learn.git#egg=pu_learn
 ```
