@@ -9,10 +9,9 @@ from sklearn import metrics
 
 class PUClassifier(BaseEstimator, ClassifierMixin):
 
-    def __init__(self, base_estimator, positive_class_prior=0.5, class_weight='balanced', random_state=0):
+    def __init__(self, base_estimator, positive_class_prior=0.5, random_state=0):
         self.base_estimator = base_estimator
         self.positive_class_prior = positive_class_prior
-        self.class_weight = class_weight
         self.random_state = random_state
 
     def fit(self, X, s):
@@ -34,7 +33,6 @@ class PUClassifier(BaseEstimator, ClassifierMixin):
             scores = np.zeros(n_splits)
             for i, (itr, ite) in enumerate(skf.split(X, y)):
                 model.fit(X[itr], y[itr], sample_weight=sample_weight[itr])
-                # y_pred = model.predict(X[ite])
                 scores[i] = score_func(model, X[ite], y[ite], sample_weight=sample_weight[ite])
             score = scores.mean()
             if score > best_score:
