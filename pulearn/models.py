@@ -2,6 +2,7 @@ import itertools
 from logging import getLogger
 
 import numpy as np
+from scipy import sparse
 from sklearn.base import BaseEstimator, ClassifierMixin
 from sklearn.linear_model import LogisticRegression, SGDClassifier
 from sklearn.model_selection import StratifiedKFold, KFold
@@ -48,6 +49,11 @@ class PUClassifier(BaseEstimator, ClassifierMixin):
         return self
 
     def _get_input(self, X, s):
+        if sparse.issparse(X):
+            vstack = sparse.vstack
+        else:
+            vstack = np.vstack
+
         Xp = X[s == 1]
         Xu = X[s == 0]
         m, n = Xp.shape[0], Xu.shape[0]
@@ -56,7 +62,7 @@ class PUClassifier(BaseEstimator, ClassifierMixin):
             # TODO: implement class prior estimation
             pass
 
-        X = np.vstack([Xp, Xu, Xp])
+        X = vstack([Xp, Xu, Xp])
         y = np.concatenate([
             np.repeat(1, m),
             np.repeat(-1, n),
