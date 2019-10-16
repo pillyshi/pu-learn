@@ -8,5 +8,5 @@ setup(
     author_email = 'pillyshi21@gmail.com',
     description = 'Simple PU Learning',
     packages = ['pulearn'],
-    install_requires = ['numpy', 'scikit-learn'],
+    install_requires = ['numpy', 'scipy', 'scikit-learn'],
 )
